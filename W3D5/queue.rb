@@ -4,20 +4,30 @@
 
 class Queue
 
+    attr_reader :queue
+
     def initialize
         @queue = Array.new
     end
 
     def enqueue(el)
-        @queue.unshift(el)
+        queue.unshift(el)
     end
     
     def dequeue
-        @queue.pop
+        queue.pop
     end 
     
     def peek
-        @queue.first
+        queue.first
+    end
+
+    def empty?
+        queue.length == 0
+    end
+
+    def show
+        queue.dup
     end
 
 end

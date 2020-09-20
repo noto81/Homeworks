@@ -19,8 +19,11 @@ class Map
     #can be used to either create a new key-value pair or update the value 
     # for a pre-existing key
     def set(key, value)
-
+        @map.push([key, value])
     end
+    #        return pair[1] if pair[0] == key }
+
+  
 
     def get(key)
         @map.each { |pair| return pair[1] if pair[0] == key }
