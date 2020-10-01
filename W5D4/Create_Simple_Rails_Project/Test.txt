@@ -1,0 +1,36 @@
+[20] pry(main)> house = House.new(address: '308 Negra Arroyo Lane')     
+=> #<House:0x00007fffc74055c8 id: nil, address: "308 Negra Arroyo Lane">
+[21] pry(main)> person = Person.new(name: 'Walter White', house_id: house.id)
+=> #<Person:0x00007fffc72e2ee8 id: nil, name: "Walter White", house_id: nil> 
+[22] pry(main)> house.save!
+   (0.3ms)  BEGIN
+  House Create (2.7ms)  INSERT INTO "houses" ("address") VALUES ($1) RETURNING "id"  [["address", "308 Negra Arroyo Lane"]]
+   (5.9ms)  COMMIT
+=> true
+[23] pry(main)> person.save!
+   (0.3ms)  BEGIN
+  Person Create (2.7ms)  INSERT INTO "people" ("name") VALUES ($1) RETURNING "id"  [["name", "Walter White"]]
+   (0.4ms)  ROLLBACK
+ActiveRecord::NotNullViolation: PG::NotNullViolation: ERROR:  null value in column "house_id" violates not-null constraint
+DETAIL:  Failing row contains (2, Walter White, null).
+: INSERT INTO "people" ("name") VALUES ($1) RETURNING "id"
+from /home/noto81/.rbenv/versions/2.5.1/lib/ruby/gems/2.5.0/gems/activerecord-5.2.4.4/lib/active_record/connection_adapters/postgresql_adapter.rb:611:in `exec_params'
+Caused by PG::NotNullViolation: ERROR:  null value in column "house_id" violates not-null constraint
+DETAIL:  Failing row contains (2, Walter White, null).
+
+
+from /home/noto81/.rbenv/versions/2.5.1/lib/ruby/gems/2.5.0/gems/activerecord-5.2.4.4/lib/active_record/connection_adapters/postgresql_adapter.rb:611:in `exec_params'
+[25] pry(main)> person
+=> #<Person:0x00007fffc72e2ee8 id: nil, name: "Walter White", house_id: nil>
+[26] pry(main)> house
+=> #<House:0x00007fffc74055c8 id: 1, address: "308 Negra Arroyo Lane">
+[27] pry(main)> person
+=> #<Person:0x00007fffc72e2ee8 id: nil, name: "Walter White", house_id: nil>
+[28] pry(main)> person.house_id = 1
+=> 1
+[29] pry(main)> person.save!
+   (0.2ms)  BEGIN
+  Person Create (0.9ms)  INSERT INTO "people" ("name", "house_id") VALUES ($1, $2) RETURNING "id"  [["name", "Walter White"], ["house_id", 1]]
+   (1.7ms)  COMMIT
+=> true
+[30] pry(main)> 
